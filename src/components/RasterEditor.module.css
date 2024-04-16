@@ -1,0 +1,24 @@
+.rasterEditorContainer button {
+  margin-inline: 0.25rem;
+}
+
+.rasterEditor {
+  background-color: lightgrey;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rasterRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rasterCell input {
+  text-align: center;
+  width: 3rem;
+  padding: 0.5rem 0.1rem;
+  border-radius: 0.5rem;
+}

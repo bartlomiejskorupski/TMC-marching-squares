@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useEffect, useRef } from 'react';
 
+import styles from './MainCanvas.module.css';
+
 const SQUARE_SIZE = 50;
 const RASTER_OFF = {
   X: 60,
@@ -76,7 +78,7 @@ export default function MainCanvas() {
   }, [contour, raster, contourValue]);
 
   return (
-    <div className="canvas-container">
+    <div className={styles.canvasContainer}>
       <canvas ref={canvasRef} width="600" height="500"></canvas>
     </div>
   );

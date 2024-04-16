@@ -167,6 +167,9 @@ function interpolateCase(
       const leftX = linearInterpolation(upperLeft, lowerLeft, contourValue);
       const rightX = linearInterpolation(upperRight, lowerRight, contourValue);
       const bottomX = linearInterpolation(lowerLeft, lowerRight, contourValue);
+
+      // TODO: Decide on cut or join based on interpolated values
+
       return [
         new Polyline([POINT.left(leftX), POINT.top(topX)]),
         new Polyline([POINT.bottom(bottomX), POINT.right(rightX)]),

@@ -10,6 +10,8 @@ import {
 } from '../store/slices/canvas-slice';
 import { RootState } from '../store';
 
+import styles from './ControlPanel.module.css';
+
 export default function ControlPanel() {
   const { contourValue, interpolation, autoGenerate } = useSelector(
     (state: RootState) => state.canvas
@@ -62,8 +64,8 @@ export default function ControlPanel() {
   );
 
   return (
-    <div className="controls">
-      <div className="control-group">
+    <div className={styles.controls}>
+      <div className={styles.controlGroup}>
         <label htmlFor="interpolation">Use Interpolation</label>
         <input
           type="checkbox"
@@ -73,7 +75,7 @@ export default function ControlPanel() {
           onChange={handleInterpolationChange}
         />
       </div>
-      <div className="control-group">
+      <div className={styles.controlGroup}>
         <label htmlFor="contourValue">Contour Value</label>
         <input
           type="range"
@@ -97,7 +99,7 @@ export default function ControlPanel() {
         Normal Distribution
       </button>
       <button onClick={handleGenerateContour}>Generate Contour</button>
-      <div className="control-group">
+      <div className={styles.controlGroup}>
         <label htmlFor="auto-generate">Auto Generate</label>
         <input
           type="checkbox"

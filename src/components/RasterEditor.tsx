@@ -7,6 +7,8 @@ import {
   setRasterCell,
 } from '../store/slices/canvas-slice';
 
+import styles from './RasterEditor.module.css';
+
 export default function RasterEditor() {
   const [visible, setVisible] = useState(false);
 
@@ -60,7 +62,7 @@ export default function RasterEditor() {
   );
 
   return (
-    <form className="raster-editor-container" onSubmit={handleSubmit}>
+    <form className={styles.rasterEditorContainer} onSubmit={handleSubmit}>
       <button onClick={handleEdit} type="button">
         Edit raster
       </button>
@@ -68,11 +70,11 @@ export default function RasterEditor() {
         Save raster
       </button>
       {visible && (
-        <div className="raster-editor">
+        <div className={styles.rasterEditor}>
           {raster.map((row, rI) => (
-            <div key={'r' + rI} className="raster-row">
+            <div key={'r' + rI} className={styles.rasterRow}>
               {row.map((cell, cI) => (
-                <div key={'c' + cI} className="raster-cell">
+                <div key={'c' + cI} className={styles.rasterCell}>
                   <input
                     type="number"
                     // defaultValue={cell}

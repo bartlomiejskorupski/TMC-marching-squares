@@ -1,0 +1,20 @@
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  /* flex-wrap: wrap; */
+  margin-block: 0.5rem;
+}
+
+.controls label {
+  font-size: 0.9rem;
+  display: block;
+}
+
+.controls input[type='number'] {
+  text-align: center;
+  width: 4rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.5rem;
+}

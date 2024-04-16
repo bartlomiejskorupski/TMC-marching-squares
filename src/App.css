@@ -3,6 +3,11 @@
   text-align: center;
 }
 
+h1 {
+  font-size: 1.2em;
+  line-height: 1.1;
+}
+
 main {
   display: flex;
   flex-direction: row;
@@ -10,61 +15,4 @@ main {
   align-items: flex-start;
   justify-content: center;
   gap: 1rem;
-}
-
-input {
-  font: inherit;
-}
-
-.controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-block: 0.5rem;
-}
-
-.controls label {
-  font-size: 0.9rem;
-  display: block;
-}
-
-.controls input[type='number'] {
-  text-align: center;
-  width: 4rem;
-  padding: 0.5rem 0.25rem;
-  border-radius: 0.5rem;
-}
-
-.control-group {
-  margin-block: 1rem;
-}
-
-.canvas-container {
-  border: 2px solid black;
-}
-
-.raster-editor-container button {
-  margin-inline: 0.25rem;
-}
-
-.raster-editor {
-  background-color: lightgrey;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.raster-row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.raster-cell input {
-  text-align: center;
-  width: 3rem;
-  padding: 0.5rem 0.1rem;
-  border-radius: 0.5rem;
 }
