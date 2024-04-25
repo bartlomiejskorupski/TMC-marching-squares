@@ -10,6 +10,8 @@ type IntersectionCase =
   | 'VERTICAL'
   | 'AMBIGUOUS';
 
+type AmbiguityResolutionStrategy = 'UPPER_LEFT' | 'UPPER_RIGHT';
+
 /**
  * Marching squares algorithm options object
  */
@@ -18,6 +20,7 @@ interface MarchingSquaresOptions {
    * Should linear interpolation be used to calculate the controur line
    */
   interpolation?: boolean;
+  ambiguityResolutionStrategy?: AmbiguityResolutionStrategy;
 }
 
 /**
@@ -31,6 +34,7 @@ export default function marchingSquares(
   contourValue: number,
   options: MarchingSquaresOptions = {
     interpolation: true,
+    ambiguityResolutionStrategy: 'UPPER_LEFT',
   }
 ): IPolyline[] {
   const contourlines: IPolyline[] = [];
@@ -168,8 +172,6 @@ function interpolateCase(
       const rightX = linearInterpolation(upperRight, lowerRight, contourValue);
       const bottomX = linearInterpolation(lowerLeft, lowerRight, contourValue);
 
-      // TODO: Decide on cut or join based on interpolated values
-
       return [
         new Polyline([POINT.left(leftX), POINT.top(topX)]),
         new Polyline([POINT.bottom(bottomX), POINT.right(rightX)]),
@@ -178,6 +180,11 @@ function interpolateCase(
   }
 }
 
-function linearInterpolation(fromY: number, toY: number, contourY: number) {
-  return (contourY - fromY) / (toY - fromY);
+function linearInterpolation(
+  fromY: number,
+  toY: number,
+  contourY: number,
+  xLength: number = 1
+) {
+  return ((contourY - fromY) * xLength) / (toY - fromY);
 }

@@ -1,30 +1,46 @@
-# React + TypeScript + Vite
+# TMC - Marching Squares Algorithm
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React web application for visualizing marching squares algorithm.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js v18+
+- npm
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Clone the repository and install dependencies
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```console
+git clone https://github.com/bartlomiejskorupski/TMC-marching-squares.git
+cd TMC-marching-squares
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Running locally
+
+To host the application locally run the following command:
+
+```console
+npm run dev
+```
+
+The application is now hosted on http://localhost:5173/
+
+## Building for deployment
+
+To build the project run the following command:
+
+```console
+npm run build
+```
+
+Application files are now in the dist folder and can be hosted statically.
+
+Example of hosting locally using http-server npm package:
+
+```console
+http-server --port 3000
+```
+
+The application is now available at http://localhost:3000/.
