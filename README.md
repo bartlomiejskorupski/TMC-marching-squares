@@ -2,6 +2,8 @@
 
 React web application for visualizing marching squares algorithm.
 
+[Documentation](DOCS.md)
+
 ## Requirements
 
 - Node.js v18+
@@ -40,6 +42,7 @@ Application files are now in the dist folder and can be hosted statically.
 Example of hosting locally using http-server npm package:
 
 ```console
+cd dist
 http-server --port 3000
 ```
 

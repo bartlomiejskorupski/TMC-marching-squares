@@ -1,33 +1,28 @@
-import { IPolyline, Point, Polyline } from './point';
-
-type IntersectionCase =
-  | 'NONE'
-  | 'UPPER_LEFT'
-  | 'UPPER_RIGHT'
-  | 'LOWER_LEFT'
-  | 'LOWER_RIGHT'
-  | 'HORIZONTAL'
-  | 'VERTICAL'
-  | 'AMBIGUOUS';
-
-type AmbiguityResolutionStrategy = 'UPPER_LEFT' | 'UPPER_RIGHT';
+import { IPolyline } from './types/IPolyline';
+import { Point } from './types/Point';
+import { Polyline } from './types/Polyline';
 
 /**
- * Marching squares algorithm options object
+ * Marching squares algorithm options object.
+ * @param interpolation Should linear interpolation be used to calculate the controur line?
+ * @param ambiguityResolutionStrategy How should ambiguous contour cases be chosen?
  */
 interface MarchingSquaresOptions {
-  /**
-   * Should linear interpolation be used to calculate the controur line
-   */
   interpolation?: boolean;
   ambiguityResolutionStrategy?: AmbiguityResolutionStrategy;
 }
 
 /**
- *
- * @param data 2D raster
- * @param contourValue Value of the contour
- * @returns List of lines that make up the contour
+ * How should ambiguous contour cases be chosen?
+ */
+type AmbiguityResolutionStrategy = 'UPPER_LEFT' | 'UPPER_RIGHT';
+
+/**
+ * Finds the contour of a given 2D raster with a given contour value.
+ * @param data A 2D raster containing floating point values.
+ * @param contourValue Value of the contour.
+ * @param options Options object.
+ * @returns The list of lines that make up the contour.
  */
 export default function marchingSquares(
   data: number[][],
@@ -41,11 +36,14 @@ export default function marchingSquares(
 
   for (let y = 0; y < data.length - 1; y++) {
     for (let x = 0; x < data[y].length - 1; x++) {
+      // Take a group of four adjacent raster points.
+      // Upper left, upper right, lower left, lower right
       const ul = data[y][x];
       const ur = data[y][x + 1];
       const ll = data[y + 1][x];
       const lr = data[y + 1][x + 1];
 
+      // Identify the contour intersection case
       const intersectionCase = identifyCase(ul, ur, ll, lr, contourValue);
 
       if (intersectionCase === 'NONE') {
@@ -53,12 +51,16 @@ export default function marchingSquares(
       }
 
       let lines: Polyline[];
+      // Generate lines from case
       if (options.interpolation) {
+        // Use interpolation to generate lines for a given case
         lines = interpolateCase(intersectionCase, ul, ur, ll, lr, contourValue);
       } else {
+        // Lookup case without interpolation
         lines = CASE_LINE_MAP[intersectionCase];
       }
 
+      // Translate calculated lines in reference to the coordinates of the upper left raster point
       const translatedLines = lines.map((line) =>
         line.toTranslated(new Point(x, y))
       );
@@ -66,9 +68,32 @@ export default function marchingSquares(
     }
   }
 
+  // Return generated contour lines.
   return contourlines;
 }
 
+/**
+ * Contour intersection case.
+ */
+type IntersectionCase =
+  | 'NONE'
+  | 'UPPER_LEFT'
+  | 'UPPER_RIGHT'
+  | 'LOWER_LEFT'
+  | 'LOWER_RIGHT'
+  | 'HORIZONTAL'
+  | 'VERTICAL'
+  | 'AMBIGUOUS';
+
+/**
+ * Identifies how four adjacent raster points intersect with the contour.
+ * @param upperLeftVal Value of the upper left point.
+ * @param upperRightVal Value of the upper right point.
+ * @param lowerLeftVal Value of the lower left point.
+ * @param lowerRightVal Value of the lower right point.
+ * @param contourValue Value of the contour.
+ * @returns Intersection case.
+ */
 function identifyCase(
   upperLeftVal: number,
   upperRightVal: number,
@@ -80,28 +105,42 @@ function identifyCase(
   const upperRight = upperRightVal >= contourValue;
   const lowerLeft = lowerLeftVal >= contourValue;
   const lowerRight = lowerRightVal >= contourValue;
+
   if (
     upperLeft === upperRight &&
     upperRight === lowerLeft &&
     lowerLeft === lowerRight
   ) {
+    // All values are the same - either inside or outside the contour
     return 'NONE';
   } else if (upperRight === lowerRight && lowerRight === lowerLeft) {
+    // Upper left point is separated by the contour
     return 'UPPER_LEFT';
   } else if (upperLeft === lowerRight && lowerRight === lowerLeft) {
+    // Upper right point is separated by the contour
     return 'UPPER_RIGHT';
   } else if (upperLeft === upperRight && upperRight === lowerRight) {
+    // Lower left point is separated by the contour
     return 'LOWER_LEFT';
   } else if (upperLeft === upperRight && upperRight === lowerLeft) {
+    // Lower right point is separated by the contour
     return 'LOWER_RIGHT';
   } else if (upperLeft === upperRight && lowerLeft === lowerRight) {
+    // Upper points are separated from lower points by the contour
     return 'HORIZONTAL';
   } else if (upperLeft === lowerLeft && upperRight === lowerRight) {
+    // Left points are separated from right points by the contour
     return 'VERTICAL';
   }
+  // Only ambiguous case is left
   return 'AMBIGUOUS';
 }
 
+/**
+ * Helper object that creates points intersecting the top, left, right
+ * or bottom edges of four adjacent points.
+ * @param x0 Offset value 0 - 1
+ */
 const POINT = {
   top: (x0: number) => new Point(x0, 0),
   left: (x0: number) => new Point(0, x0),
@@ -109,6 +148,9 @@ const POINT = {
   bottom: (x0: number) => new Point(x0, 1),
 };
 
+/**
+ * Lookup object containing predefined lines for a given case
+ */
 const CASE_LINE_MAP: Readonly<Record<IntersectionCase, Polyline[]>> =
   Object.freeze({
     NONE: [],
@@ -124,6 +166,16 @@ const CASE_LINE_MAP: Readonly<Record<IntersectionCase, Polyline[]>> =
     ],
   });
 
+/**
+ * Generates interpolated contour lines for the given intersection case.
+ * @param intersectionCase The calculated intersection case.
+ * @param upperLeft Upper left point value.
+ * @param upperRight Upper right point value.
+ * @param lowerLeft Lower left point value.
+ * @param lowerRight Lower right point value.
+ * @param contourValue Value of the contour.
+ * @returns List of generated contour lines for the case.
+ */
 function interpolateCase(
   intersectionCase: IntersectionCase,
   upperLeft: number,
@@ -180,11 +232,21 @@ function interpolateCase(
   }
 }
 
+/**
+ * Approximates the x value of a point between two other,
+ * with a given value of Y. Starting point is at x = 0 and the end point
+ * is at x = xLength.
+ * @param fromY The value of y of the start point.
+ * @param toY The value of y of the end point.
+ * @param targetY The value of y of the target point.
+ * @param xLength The distance from the start point to the end point (default 1)
+ * @returns The approximated x value of the point between.
+ */
 function linearInterpolation(
   fromY: number,
   toY: number,
-  contourY: number,
+  targetY: number,
   xLength: number = 1
-) {
-  return ((contourY - fromY) * xLength) / (toY - fromY);
+): number {
+  return ((targetY - fromY) * xLength) / (toY - fromY);
 }

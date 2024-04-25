@@ -66,9 +66,9 @@ export default function RasterEditor() {
       <button onClick={handleEdit} type="button">
         Edit raster
       </button>
-      <button type="submit" disabled={!visible}>
+      {/*<button type="submit" disabled={!visible}>
         Save raster
-      </button>
+      </button>*/}
       {visible && (
         <div className={styles.rasterEditor}>
           {raster.map((row, rI) => (

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IPolyline } from '../../utils/point';
+import { IPolyline } from '../../utils/types/IPolyline';
 import marchingSquares from '../../utils/marching-squares';
 import {
   generateGaussianRaster,
@@ -62,10 +62,13 @@ const canvasSlice = createSlice({
     },
 
     generateContour(state) {
+      // Generate contour lines using marching squares algorithm
       const polylines = marchingSquares(state.raster, state.contourValue, {
         interpolation: state.interpolation,
       });
 
+      // Map the lines to plain javascript objects.
+      // (Redux doesn't like objects with methods)
       state.contour = polylines.map((line) => ({
         points: line.points.map((p) => ({ x: p.x, y: p.y })),
       }));
