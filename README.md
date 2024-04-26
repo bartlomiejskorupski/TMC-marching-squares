@@ -7,15 +7,26 @@ React web application for visualizing marching squares algorithm.
 ## Requirements
 
 - Node.js v18+
-- npm
+- npm v7+
 
 ## Installation
 
-Clone the repository and install dependencies
+Clone the repository
 
 ```console
 git clone https://github.com/bartlomiejskorupski/TMC-marching-squares.git
+```
+
+or download the ZIP file and unpack it.
+
+Enter the project folder
+
+```console
 cd TMC-marching-squares
+```
+Install dependencies
+
+```console
 npm install
 ```
 
